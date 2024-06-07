@@ -41,8 +41,8 @@
             for (let i = 0; i < numPoints; i++) {
                 const angle = Math.random() * 2 * Math.PI;
                 const r = Math.sqrt(Math.random()) * radius;
-                const x = r * Math.cos(angle) + container.clientWidth / 2;
-                const y = r * Math.sin(angle) + container.clientHeight / 2;
+                const x = r * Math.cos(angle) + container.clientWidth * 0.70;
+                const y = r * Math.sin(angle) + container.clientHeight * 0.70;
                 points.push({ x, y });
             }
             return points;
@@ -64,7 +64,7 @@
         let angle = 0;
         let connectedPoints = [];
         function rotateLine() {
-            angle += 1;
+            angle += 0.5;
             // console.log({ angle });
             const radians = (angle * Math.PI) / 180;
             const cx = container.clientWidth / 2;
