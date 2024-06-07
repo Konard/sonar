@@ -59,6 +59,7 @@
         let connectedPoints = [];
         function rotateLine() {
             angle += 1;
+            console.log({ angle });
             const radians = (angle * Math.PI) / 180;
             const cx = container.clientWidth / 2;
             const cy = container.clientHeight / 2;
@@ -70,14 +71,15 @@
                 const relX = point.x - cx;
                 const relY = point.y - cy;
                 const pointAngle = Math.atan2(relY, relX) * (180 / Math.PI);
+                console.log({ pointAngle });
                 if (connectedPoints.length === 0 || (angle % 360) === Math.round((pointAngle + 360) % 360)) {
                     if (!connectedPoints.includes(index)) {
                         connectedPoints.push(index);
                         if (connectedPoints.length > 1) {
-                            drawLineSegment(points[connectedPoints[connectedPoints.length - 2]], point);
+                            drawLineSegment(points[connectedPoints[connectedPoints.length - 1]], point);
                         }
-                        point.x = relX + cx;
-                        point.y = relY + cy;
+                        // point.x = relX + cx;
+                        // point.y = relY + cy;
 
                     }
                 }
