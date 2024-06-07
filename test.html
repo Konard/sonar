@@ -21,7 +21,7 @@
         const container = document.querySelector('.canvas-container');
         const line = document.getElementById('rotating-line');
 
-        const NUM_POINTS = 10; // Configurable number of points
+        const NUM_POINTS = 4; // Configurable number of points
         const RADIUS = 200; // Radius of the circle
 
         line.style.width = '2px';
@@ -71,12 +71,12 @@
                 const relX = point.x - cx;
                 const relY = point.y - cy;
                 const pointAngle = Math.atan2(relY, relX) * (180 / Math.PI);
-                console.log({ pointAngle });
                 if (connectedPoints.length === 0 || (angle % 360) === Math.round((pointAngle + 360) % 360)) {
+                    console.log({ pointAngle });
                     if (!connectedPoints.includes(index)) {
                         connectedPoints.push(index);
                         if (connectedPoints.length > 1) {
-                            drawLineSegment(points[connectedPoints[connectedPoints.length - 1]], point);
+                            drawLineSegment(points[connectedPoints[connectedPoints.length - 2]], points[connectedPoints[connectedPoints.length - 1]]);
                         }
                         // point.x = relX + cx;
                         // point.y = relY + cy;
