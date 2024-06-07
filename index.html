@@ -298,9 +298,6 @@
             left: 78%;
         }
     </style>
-    <script>
-        
-    </script>
   </head>
   <body>
     <div class="app">
@@ -329,12 +326,29 @@
                 </div>
                 <div class="matrix"></div>
                 <div class="rotary"></div>
-                <div class="display">
-                    <div class="ship ship-1"></div>
-                    <div class="ship ship-2"></div>
+                <div id="sea" class="display">
+                    <!-- <div class="ship ship-1"></div>
+                    <div class="ship ship-2"></div> -->
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        function randomIntFromInterval(min, max) { // min and max included 
+            return Math.floor(Math.random() * (max - min + 1) + min);
+        }
+
+        const N = 100;
+
+        for (let i = 0; i < N; i++) {
+            const top = randomIntFromInterval(15, 85);
+            const left = randomIntFromInterval(15, 85);
+            const div = document.createElement("div");
+            div.style.top = `${top}%`;
+            div.style.left = `${left}%`;
+            div.className = 'ship';
+            document.getElementById("sea").appendChild(div);
+        }
+    </script>
   </body>
 </html>
