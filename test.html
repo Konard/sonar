@@ -6,7 +6,7 @@
     <title>Rotating Line and Connecting Points</title>
     <style>
         body { display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #f0f0f0; }
-        .canvas-container { position: relative; width: 400px; height: 400px; background: white; border: 1px solid #ccc; border-radius: 50%; }
+        .canvas-container { position: relative; width: 800px; height: 800px; background: white; border: 1px solid #ccc; border-radius: 50%; }
         .line, .point { position: absolute; }
         .point { width: 10px; height: 10px; background: red; border-radius: 50%; }
         .segment { position: absolute; background: green; height: 2px; }
@@ -26,7 +26,7 @@
         }
 
         const NUM_POINTS = randomIntFromInterval(3, 100); // Configurable number of points
-        const RADIUS = 200; // Radius of the circle
+        const RADIUS = 400; // Radius of the circle
 
         line.style.width = '2px';
         line.style.height = `${RADIUS}px`;
