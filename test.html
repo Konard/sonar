@@ -73,7 +73,7 @@
                 const relX = point.x - cx;
                 const relY = point.y - cy;
                 const pointAngle = Math.atan2(relY, relX) * (180 / Math.PI);
-                if (connectedPoints.length === 0 || (angle % 360) === Math.round((pointAngle + 360) % 360)) {
+                if ((angle % 360) === Math.round((pointAngle + 360) % 360)) {
                     console.log({ pointAngle });
                     if (!connectedPoints.includes(index)) {
                         connectedPoints.push(index);
