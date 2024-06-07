@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rotating Line and Points</title>
+    <style>
+        body { display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .canvas-container { position: relative; }
+        .line, .point { position: absolute; }
+        .point { width: 10px; height: 10px; background: red; border-radius: 50%; }
+    </style>
+</head>
+<body>
+    <div class="canvas-container">
+        <div class="line" id="rotating-line"></div>
+        <div class="point" style="left: 150px; top: 50px;"></div>
+        <div class="point" style="left: 50px; top: 150px;"></div>
+        <div class="point" style="left: 200px; top: 200px;"></div>
+        <div class="point" style="left: 100px; top: 100px;"></div>
+        <!-- Add more points as needed -->
+    </div>
+
+    <script>
+        const container = document.querySelector('.canvas-container');
+        const line = document.getElementById('rotating-line');
+        const points = Array.from(document.querySelectorAll('.point'));
+
+        line.style.width = '2px';
+        line.style.height = '200px';
+        line.style.backgroundColor = 'blue';
+        line.style.transformOrigin = 'bottom';
+        line.style.left = '50%';
+        line.style.bottom = '50%';
+
+        let angle = 0;
+        function rotateLine() {
+            angle += 1;
+            // Rotate line
+            line.style.transform = `rotate(${angle}deg)`;
+            // Connect points to line
+            points.forEach(point => {
+                const rect = point.getBoundingClientRect();
+                const containerRect = container.getBoundingClientRect();
+                const pointX = rect.left + rect.width / 2 - containerRect.left;
+                const pointY = rect.top + rect.height / 2 - containerRect.top;
+                if (
+                    angle % 360 === Math.round(rotationAngleBetween({ x: 0, y: 0 }, { x: pointX, y: pointY }))
+                ) {
+                    point.style.background = 'blue'; // Change color when connected
+                } else {
+                    point.style.background = 'red'; // Default color
+                }
+            });
+
+            requestAnimationFrame(rotateLine);
+        }
+
+        function rotationAngleBetween(center, point) {
+            const deltaX = point.x - center.x;
+            const deltaY = point.y - center.y;
+            const angleInDegrees = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
+            return (angleInDegrees + 360) % 360; // Normalize between 0 and 360 degrees
+        }
+
+        rotateLine();
+    </script>
+</body>
+</html>
