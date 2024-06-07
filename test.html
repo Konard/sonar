@@ -57,7 +57,7 @@
             container.appendChild(pointDiv);
         });
 
-        let angle = 90;
+        let angle = 0;
         let connectedPoints = [];
         function rotateLine() {
             angle += 1;
@@ -67,7 +67,7 @@
             const cy = container.clientHeight / 2;
 
             // Rotate line
-            line.style.transform = `rotate(${angle}deg)`;
+            line.style.transform = `rotate(${angle+90}deg)`;
 
             points.forEach((point, index) => {
                 const relX = point.x - cx;
@@ -87,7 +87,7 @@
             });
 
             // Stop rotation after full circle
-            if (angle < 720 + 90) {
+            if (angle < 720) {
                 requestAnimationFrame(rotateLine);
             }
         }
