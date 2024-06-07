@@ -75,16 +75,13 @@
                 const pointAngle = Math.atan2(relY, relX) * (180 / Math.PI);
                 if ((angle % 360) === Math.round((pointAngle + 360) % 360)) {
                     console.log({ pointAngle });
-                    const previousPointIndex = connectedPoints[connectedPoints.length - 2];
-                    const lastPointIndex = connectedPoints[connectedPoints.length - 1];
-
-                    if (!connectedPoints.includes(index) || (lastPointIndex != index && connectedPoints[0] == index)) {
+                    if (!connectedPoints.includes(index) || (connectedPoints.length > 1 && lastPointIndex != index && connectedPoints[0] == index)) {
                         connectedPoints.push(index);
-                        if (connectedPoints.length > 1) {
-                            drawLineSegment(points[previousPointIndex], points[lastPointIndex]);
-                        }
-                        // point.x = relX + cx;
-                        // point.y = relY + cy;
+                    }
+                    if (connectedPoints.length > 1) {
+                        const previousPointIndex = connectedPoints[connectedPoints.length - 2];
+                        const lastPointIndex = connectedPoints[connectedPoints.length - 1];
+                        drawLineSegment(points[previousPointIndex], points[lastPointIndex]);
                     }
                 }
             });
