@@ -21,7 +21,11 @@
         const container = document.querySelector('.canvas-container');
         const line = document.getElementById('rotating-line');
 
-        const NUM_POINTS = 100; // Configurable number of points
+        function randomIntFromInterval(min, max) { 
+            return Math.floor(Math.random() * (max - min + 1) + min);
+        }
+
+        const NUM_POINTS = randomIntFromInterval(3, 100); // Configurable number of points
         const RADIUS = 200; // Radius of the circle
 
         line.style.width = '2px';
