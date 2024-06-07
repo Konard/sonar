@@ -3,64 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rotating Line and Points</title>
+    <title>Rotating Line and Connecting Points</title>
     <style>
-        body { display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .canvas-container { position: relative; }
+        body { display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #f0f0f0; }
+        .canvas-container { position: relative; width: 400px; height: 400px; background: white; border: 1px solid #ccc; border-radius: 50%; }
         .line, .point { position: absolute; }
         .point { width: 10px; height: 10px; background: red; border-radius: 50%; }
+        .segment { position: absolute; background: green; height: 2px; }
     </style>
 </head>
 <body>
     <div class="canvas-container">
         <div class="line" id="rotating-line"></div>
-        <div class="point" style="left: 150px; top: 50px;"></div>
-        <div class="point" style="left: 50px; top: 150px;"></div>
-        <div class="point" style="left: 200px; top: 200px;"></div>
-        <div class="point" style="left: 100px; top: 100px;"></div>
-        <!-- Add more points as needed -->
     </div>
 
     <script>
         const container = document.querySelector('.canvas-container');
         const line = document.getElementById('rotating-line');
-        const points = Array.from(document.querySelectorAll('.point'));
+
+        const NUM_POINTS = 10; // Configurable number of points
+        const RADIUS = 200; // Radius of the circle
 
         line.style.width = '2px';
-        line.style.height = '200px';
+        line.style.height = `${RADIUS}px`;
         line.style.backgroundColor = 'blue';
-        line.style.transformOrigin = 'bottom';
+        line.style.transformOrigin = 'bottom center';
         line.style.left = '50%';
         line.style.bottom = '50%';
 
+        // Function to generate random points within a circle
+        const generateRandomPoints = (numPoints, radius) => {
+            const points = [];
+            for (let i = 0; i < numPoints; i++) {
+                const angle = Math.random() * 2 * Math.PI;
+                const r = Math.sqrt(Math.random()) * radius;
+                const x = r * Math.cos(angle) + container.clientWidth / 2;
+                const y = r * Math.sin(angle) + container.clientHeight / 2;
+                points.push({ x, y });
+            }
+            return points;
+        };
+
+        // Create points
+        const points = generateRandomPoints(NUM_POINTS, RADIUS / 2);
+
+        points.forEach(({ x, y }) => {
+            const pointDiv = document.createElement('div');
+            pointDiv.classList.add('point');
+            pointDiv.style.left = `${x - 5}px`; // Center justify the point
+            pointDiv.style.top = `${y - 5}px`; // Center justify the point
+            container.appendChild(pointDiv);
+        });
+
         let angle = 0;
+        let connectedPoints = [];
         function rotateLine() {
             angle += 1;
+            const radians = (angle * Math.PI) / 180;
+            const cx = container.clientWidth / 2;
+            const cy = container.clientHeight / 2;
+
             // Rotate line
             line.style.transform = `rotate(${angle}deg)`;
-            // Connect points to line
-            points.forEach(point => {
-                const rect = point.getBoundingClientRect();
-                const containerRect = container.getBoundingClientRect();
-                const pointX = rect.left + rect.width / 2 - containerRect.left;
-                const pointY = rect.top + rect.height / 2 - containerRect.top;
-                if (
-                    angle % 360 === Math.round(rotationAngleBetween({ x: 0, y: 0 }, { x: pointX, y: pointY }))
-                ) {
-                    point.style.background = 'blue'; // Change color when connected
-                } else {
-                    point.style.background = 'red'; // Default color
+
+            points.forEach((point, index) => {
+                const relX = point.x - cx;
+                const relY = point.y - cy;
+                const pointAngle = Math.atan2(relY, relX) * (180 / Math.PI);
+                if (connectedPoints.length === 0 || (angle % 360) === Math.round((pointAngle + 360) % 360)) {
+                    if (!connectedPoints.includes(index)) {
+                        connectedPoints.push(index);
+                        if (connectedPoints.length > 1) {
+                            drawLineSegment(points[connectedPoints[connectedPoints.length - 2]], point);
+                        }
+                        point.x = relX + cx;
+                        point.y = relY + cy;
+
+                    }
                 }
             });
 
-            requestAnimationFrame(rotateLine);
+            // Stop rotation after full circle
+            if (angle < 360) {
+                requestAnimationFrame(rotateLine);
+            }
         }
 
-        function rotationAngleBetween(center, point) {
-            const deltaX = point.x - center.x;
-            const deltaY = point.y - center.y;
-            const angleInDegrees = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
-            return (angleInDegrees + 360) % 360; // Normalize between 0 and 360 degrees
+        function drawLineSegment(start, end) {
+            const segmentDiv = document.createElement('div');
+            segmentDiv.classList.add('segment');
+            const length = Math.hypot(end.x - start.x, end.y - start.y);
+            const angle = Math.atan2(end.y - start.y, end.x - start.x) * (180 / Math.PI);
+
+            segmentDiv.style.width = `${length}px`;
+            segmentDiv.style.transform = `rotate(${angle}deg)`;
+            segmentDiv.style.left = `${start.x}px`;
+            segmentDiv.style.top = `${start.y}px`;
+
+            container.appendChild(segmentDiv);
         }
 
         rotateLine();
