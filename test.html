@@ -47,6 +47,8 @@
         // Create points
         const points = generateRandomPoints(NUM_POINTS, RADIUS / 2);
 
+        drawLineSegment(points[0], points[1]);
+
         points.forEach(({ x, y }) => {
             const pointDiv = document.createElement('div');
             pointDiv.classList.add('point');
