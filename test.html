@@ -93,19 +93,41 @@
             }
         }
 
-        function drawLineSegment(start, end) {
-            const segmentDiv = document.createElement('div');
-            segmentDiv.classList.add('segment');
-            const length = Math.hypot(end.x - start.x, end.y - start.y);
-            const angle = Math.atan2(end.y - start.y, end.x - start.x) * (180 / Math.PI);
+        // function drawLineSegment(start, end) {
+        //     const segmentDiv = document.createElement('div');
+        //     segmentDiv.classList.add('segment');
+        //     const length = Math.hypot(end.x - start.x, end.y - start.y);
+        //     const angle = Math.atan2(end.y - start.y, end.x - start.x) * (180 / Math.PI);
 
-            segmentDiv.style.width = `${length}px`;
-            segmentDiv.style.transform = `rotate(${angle}deg)`;
-            segmentDiv.style.left = `${start.x}px`;
-            segmentDiv.style.top = `${start.y}px`;
+        //     segmentDiv.style.width = `${length}px`;
+        //     segmentDiv.style.transform = `rotate(${angle}deg)`;
+        //     segmentDiv.style.left = `${start.x}px`;
+        //     segmentDiv.style.top = `${start.y}px`;
 
-            container.appendChild(segmentDiv);
+        //     container.appendChild(segmentDiv);
+        // }
+
+        function drawLineSegment(start, end, size, opacity, color) { 
+            var length = Math.hypot(end.y-start.y, end.x-start.x),
+                deg    = Math.atan2(end.y-start.y, end.x-start.x) * 180 / Math.PI;
+
+            var newdiv = document.createElement('div'); 
+            // newdiv.setAttribute('id', id);  
+            newdiv.style.width =  length + "px";     
+            newdiv.style.height = (size||2) + "px";  
+            newdiv.style.left = start.x + "px";   
+            newdiv.style.top = start.y + "px";   
+            newdiv.style.background = color || "green";    
+            newdiv.style.opacity = opacity || 1;
+            newdiv.style.transformOrigin = "left 50%";
+            newdiv.style.transform = "rotate("+ deg +"deg)";
+            newdiv.style.position = "absolute";
+
+            // document.body.appendChild(newdiv);
+            container.appendChild(newdiv);
         }
+
+            // creatediv("a", 20, 20, 200, 80);
 
         rotateLine();
     </script>
