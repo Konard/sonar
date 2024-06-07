@@ -24,8 +24,8 @@
         const NUM_POINTS = 4; // Configurable number of points
         const RADIUS = 200; // Radius of the circle
 
-        line.style.width = '${RADIUS}px';
-        line.style.height = `2px`;
+        line.style.width = '2px';
+        line.style.height = `${RADIUS}px`;
         line.style.backgroundColor = 'blue';
         line.style.transformOrigin = 'bottom center';
         line.style.left = '50%';
@@ -57,7 +57,7 @@
             container.appendChild(pointDiv);
         });
 
-        let angle = 0;
+        let angle = 90;
         let connectedPoints = [];
         function rotateLine() {
             angle += 1;
@@ -87,7 +87,7 @@
             });
 
             // Stop rotation after full circle
-            if (angle < 720) {
+            if (angle < 720 + 90) {
                 requestAnimationFrame(rotateLine);
             }
         }
